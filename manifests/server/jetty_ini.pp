@@ -31,7 +31,7 @@
 #
 class puppetdb::server::jetty_ini(
   $listen_address     = $puppetdb::params::listen_address,
-  $listen_port        = $puppetdb::params::listen_port,  
+  $listen_port        = $puppetdb::params::listen_port,
   $ssl_listen_address = $puppetdb::params::ssl_listen_address,
   $ssl_listen_port    = $puppetdb::params::ssl_listen_port,
   $confdir            = $puppetdb::params::confdir,

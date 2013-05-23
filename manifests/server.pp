@@ -27,14 +27,14 @@
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['listen_port']        - The port on which the puppetdb web server should
 #                            accept HTTP requests (defaults to 8080).
-#   ['open_listen_port']   - If true, open the http listen port on the firewall. 
+#   ['open_listen_port']   - If true, open the http listen port on the firewall.
 #                            (defaults to false).
 #   ['ssl_listen_address'] - The address that the web server should bind to
 #                            for HTTPS requests.  (defaults to `$::clientcert`.)
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
-#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
+#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall.
 #                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
@@ -134,8 +134,10 @@ class puppetdb::server(
   }
 
   service { $puppetdb_service:
-    ensure => running,
-    enable => true,
+    ensure     => running,
+    enable     => true,
+    hasrestart => false,
+    restart    => 'service puppetdb restart && sleep 10',
   }
 
   Package[$puppetdb_package] ->

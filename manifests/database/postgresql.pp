@@ -58,7 +58,6 @@ class puppetdb::database::postgresql(
     $final_manage_redhat_firewall = true
   }
 
-
   # get the pg server up and running
   class { '::postgresql::server':
     config_hash => {

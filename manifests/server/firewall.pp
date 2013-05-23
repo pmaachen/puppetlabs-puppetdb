@@ -1,6 +1,6 @@
 class puppetdb::server::firewall(
     $port                   = '',
-    $http_port              = $puppetdb::params::listen_port,             
+    $http_port              = $puppetdb::params::listen_port,
     $open_http_port         = $puppetdb::params::open_listen_port,
     $ssl_port               = $puppetdb::params::ssl_listen_port,
     $open_ssl_port          = $puppetdb::params::open_ssl_listen_port,
@@ -12,7 +12,7 @@ class puppetdb::server::firewall(
   if ($puppetdb::params::firewall_supported) {
 
     if ($manage_redhat_firewall != undef) {
-      notify {'Deprecation notice: `$manage_redhat_firewall` is deprecated in the `puppetdb::service::firewall` class and will be removed in a future version. Use `open_http_port` and `open_ssl_port` instead.':}
+#      notify {'Deprecation notice: `$manage_redhat_firewall` is deprecated in the `puppetdb::service::firewall` class and will be removed in a future version. Use `open_http_port` and `open_ssl_port` instead.':}
 
       if ($open_ssl_port != undef) {
         fail('`$manage_redhat_firewall` and `$open_ssl_port` cannot both be specified.')
@@ -27,7 +27,7 @@ class puppetdb::server::firewall(
     Firewall {
       notify => Exec['puppetdb-persist-firewall']
     }
-    
+
     if ($port) {
       notify { 'Deprecation notice: `port` parameter will be removed in future versions of the puppetdb module. Please use ssl_port instead.': }
     }
@@ -35,7 +35,7 @@ class puppetdb::server::firewall(
     if ($port and $ssl_port) {
       fail('`port` and `ssl_port` cannot both be defined. `port` is deprecated in favor of `ssl_port`')
     }
-    
+
     if ($open_http_port) {
       firewall { "${http_port} accept - puppetdb":
         port   => $http_port,

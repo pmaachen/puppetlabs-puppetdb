@@ -20,14 +20,14 @@
 #                            '0.0.0.0' = all)
 #   ['listen_port']        - The port on which the puppetdb web server should
 #                            accept HTTP requests (defaults to 8080).
-#   ['open_listen_port']   - If true, open the http listen port on the firewall. 
+#   ['open_listen_port']   - If true, open the http listen port on the firewall.
 #                            (defaults to false).
 #   ['ssl_listen_address'] - The address that the web server should bind to
 #                            for HTTPS requests.  (defaults to `$::clientcert`.)
 #                            Set to '0.0.0.0' to listen on all addresses.
 #   ['ssl_listen_port']    - The port on which the puppetdb web server should
 #                            accept HTTPS requests (defaults to 8081).
-#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall. 
+#   ['open_ssl_listen_port'] - If true, open the ssl listen port on the firewall.
 #                            (defaults to true).
 #   ['database']           - Which database backend to use; legal values are
 #                            `postgres` (default) or `embedded`.  (The `embedded`
@@ -88,11 +88,20 @@ class puppetdb(
   $puppetdb_service          = $puppetdb::params::puppetdb_service,
   $open_postgres_port        = $puppetdb::params::open_postgres_port,
   $manage_redhat_firewall    = $puppetdb::params::manage_redhat_firewall,
+  $manage_firewall           = undef,
   $confdir                   = $puppetdb::params::confdir
 ) inherits puppetdb::params {
 
-  if ($manage_redhat_firewall != undef) {
-    notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_port instead.':}
+#  if ($manage_redhat_firewall != undef) {
+#    notify {'Deprecation notice: `$manage_redhat_firewall` has been deprecated in `puppetdb` class and will be removed in a future versions. Use $open_ssl_listen_port and $open_postgres_port instead.':}
+#  }
+
+  if $manage_firewall == true {
+    firewall { '8080 open port 8080 for PuppetDB':
+      action => 'accept',
+      dport  => 8080,
+      proto  => 'tcp',
+    }
   }
 
   class { 'puppetdb::server':
