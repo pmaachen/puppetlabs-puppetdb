@@ -107,7 +107,11 @@ class puppetdb::master::config(
     require        => Puppetdb_conn_validator['puppetdb_conn'],
   }
 
-  if ($restart_puppet) {
+  if $puppet_service_name == 'httpd' {
+    require 'apache'
+  }
+
+  if $restart_puppet == true {
     # We will need to restart the puppet master service if certain config
     # files are changed, so here we make sure it's in the catalog.
     if ! defined(Service[$puppet_service_name]) {
@@ -119,5 +123,4 @@ class puppetdb::master::config(
     Class['puppetdb::master::puppetdb_conf'] ~> Service[$puppet_service_name]
     Class['puppetdb::master::routes']        ~> Service[$puppet_service_name]
   }
-
 }
